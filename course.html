@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎬 Shorts-Продюсер: Факультет Отцовства</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f14;
+  --bg-card: #1a1a24;
+  --bg-card-hover: #222233;
+  --accent: #ff6b35;
+  --accent2: #ffd166;
+  --accent3: #06d6a0;
+  --accent4: #118ab2;
+  --accent5: #ef476f;
+  --text: #e8e8ec;
+  --text-muted: #8888a0;
+  --border: #2a2a3a;
+  --gold: #ffd166;
+  --red: #ef476f;
+  --green: #06d6a0;
+  --blue: #118ab2;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  background: radial-gradient(ellipse at 30% 20%, rgba(255,107,53,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 80%, rgba(6,214,160,0.08) 0%, transparent 50%);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  background: rgba(255,107,53,0.15);
+  border: 1px solid rgba(255,107,53,0.3);
+  border-radius: 50px;
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeDown 0.8s ease;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 900;
+  line-height: 1.15;
+  position: relative;
+  z-index: 1;
+  animation: fadeDown 0.8s ease 0.1s both;
+}
+
+.hero h1 .hl {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 620px;
+  margin: 1.2rem auto 2rem;
+  position: relative;
+  z-index: 1;
+  animation: fadeDown 0.8s ease 0.2s both;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  animation: fadeDown 0.8s ease 0.35s both;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.2rem 1.8rem;
+  min-width: 140px;
+}
+
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 900;
+  font-family: 'Caveat', cursive;
+}
+
+.stat-card .label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  animation: bounce 2s infinite;
+  font-size: 1.5rem;
+  opacity: 0.4;
+}
+
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(10px)} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(15,15,20,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.nav-inner {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.nav a {
+  padding: 1rem 1.1rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.25s;
+  letter-spacing: 0.3px;
+}
+
+.nav a:hover, .nav a.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: rgba(255,107,53,0.05);
+}
+
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+.module {
+  margin: 4rem 0;
+}
+
+.module-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.module-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.module-header h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.week-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block;
+  margin-top: 0.3rem;
+}
+
+.lesson {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.lesson:hover { border-color: rgba(255,107,53,0.3); }
+
+.lesson-head {
+  padding: 1.2rem 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.lesson-head h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.lesson-head .arrow {
+  transition: transform 0.3s;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.lesson.open .lesson-head .arrow { transform: rotate(180deg); }
+
+.lesson-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  padding: 0 1.5rem;
+}
+
+.lesson.open .lesson-body {
+  max-height: 8000px;
+  padding: 0 1.5rem 1.5rem;
+}
+
+.lesson-body p { margin-bottom: 1rem; font-size: 0.95rem; }
+
+.tree {
+  background: #12121a;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 2;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  color: var(--text-muted);
+}
+
+.tree .f { color: var(--accent2); }
+.tree .g { color: var(--accent3); }
+.tree .r { color: var(--red); }
+.tree .y { color: var(--gold); }
+
+.quote {
+  border-left: 4px solid var(--accent);
+  background: rgba(255,107,53,0.06);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 0 12px 12px 0;
+  font-style: italic;
+}
+
+.quote .author {
+  display: block;
+  margin-top: 0.5rem;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.tip {
+  background: rgba(6,214,160,0.08);
+  border: 1px solid rgba(6,214,160,0.2);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.tip::before { content: '💡 '; }
+
+.warn {
+  background: rgba(239,71,111,0.08);
+  border: 1px solid rgba(239,71,111,0.2);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.warn::before { content: '⚠️ '; }
+
+.practice {
+  background: rgba(17,138,178,0.08);
+  border: 1px solid rgba(17,138,178,0.25);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  margin: 1.2rem 0;
+}
+
+.practice-title {
+  font-weight: 800;
+  color: var(--blue);
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.practice ol, .practice ul { margin-left: 1.5rem; margin-bottom: 0.5rem; }
+.practice li { margin-bottom: 0.4rem; font-size: 0.92rem; }
+
+.checklist {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.checklist label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  cursor: pointer;
+  font-size: 0.92rem;
+  transition: opacity 0.3s;
+}
+
+.checklist label:last-child { border-bottom: none; }
+
+.checklist input[type="checkbox"] {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.checklist input[type="checkbox"]:checked {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.checklist input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color: #000;
+  font-weight: 900;
+  font-size: 0.75rem;
+}
+
+.checklist input[type="checkbox"]:checked + span {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.88rem;
+}
+
+th {
+  background: rgba(255,107,53,0.1);
+  text-align: left;
+  padding: 0.8rem 1rem;
+  font-weight: 700;
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+.tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.tag-red { background: rgba(239,71,111,0.15); color: var(--red); }
+.tag-yellow { background: rgba(255,209,102,0.15); color: var(--gold); }
+.tag-green { background: rgba(6,214,160,0.15); color: var(--green); }
+.tag-blue { background: rgba(17,138,178,0.15); color: var(--blue); }
+
+.scenario {
+  background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,209,102,0.06));
+  border: 1px solid rgba(255,107,53,0.2);
+  border-radius: 14px;
+  padding: 1.3rem 1.5rem;
+  margin: 1rem 0;
+}
+
+.scenario h4 { color: var(--accent); font-size: 0.95rem; margin-bottom: 0.5rem; }
+.scenario p { font-size: 0.9rem; }
+
+.steps { counter-reset: step; margin: 1rem 0; }
+
+.step {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  align-items: flex-start;
+}
+
+.step::before {
+  counter-increment: step;
+  content: counter(step);
+  background: var(--accent);
+  color: #000;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.step-content h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+.step-content p { font-size: 0.88rem; color: var(--text-muted); }
+
+.settings-block {
+  background: #12121a;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  margin: 1rem 0;
+  line-height: 1.8;
+}
+
+.ref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.ref-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.3rem;
+  transition: all 0.3s;
+}
+
+.ref-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.ref-card h4 { font-size: 1rem; margin-bottom: 0.4rem; }
+.ref-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+.ref-card .ref-tag { margin-top: 0.7rem; }
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.book-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-card .book-type {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.book-card h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+.book-card .book-author { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+.book-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; flex: 1; }
+
+.footer {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+}
+
+.footer .big-emoji { font-size: 3rem; display: block; margin-bottom: 1rem; }
+
+.mod-orange { background: rgba(255,107,53,0.15); color: var(--accent); }
+.mod-green { background: rgba(6,214,160,0.15); color: var(--green); }
+.mod-blue { background: rgba(17,138,178,0.15); color: var(--blue); }
+.mod-gold { background: rgba(255,209,102,0.15); color: var(--gold); }
+.mod-red { background: rgba(239,71,111,0.15); color: var(--red); }
+
+.week-orange { background: rgba(255,107,53,0.15); color: var(--accent); }
+.week-green { background: rgba(6,214,160,0.15); color: var(--green); }
+.week-blue { background: rgba(17,138,178,0.15); color: var(--blue); }
+.week-gold { background: rgba(255,209,102,0.15); color: var(--gold); }
+
+html { scroll-behavior: smooth; }
+
+h4 { color: var(--text); }
+
+code {
+  background: #2a2a3a;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+}
+
+@media (max-width: 640px) {
+  .hero-stats { gap: 0.8rem; }
+  .stat-card { padding: 0.8rem 1rem; min-width: 100px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav a { padding: 0.8rem 0.9rem; font-size: 0.75rem; }
+  .ref-grid, .book-grid { grid-template-columns: 1fr; }
+  .module-header h2 { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="hero-badge">БЕСПЛАТНЫЙ КУРС • 6 НЕДЕЛЬ • ПРАКТИКА С ПЕРВОГО ДНЯ</div>
+  <h1>🎬 Shorts-Продюсер:<br><span class="hl">Факультет Отцовства</span></h1>
+  <p class="hero-sub">Полная система обучения для папы-новичка. Превращаем 1200+ архивных роликов в вирусные YouTube Shorts — телефон, CapCut и никакого дорогого оборудования.</p>
+  <div class="hero-stats">
+    <div class="stat-card"><div class="num" style="color:var(--accent)">6</div><div class="label">Недель</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--green)">4</div><div class="label">Модуля</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--gold)">30+</div><div class="label">Заданий</div></div>
+    <div class="stat-card"><div class="num" style="color:var(--blue)">∞</div><div class="label">Мотивации</div></div>
+  </div>
+  <div class="scroll-hint">↓</div>
+</section>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#intro">ВВОДНАЯ</a>
+    <a href="#tree-section">ДЕРЕВО</a>
+    <a href="#mod1">М1: АРХИВ</a>
+    <a href="#mod2">М2: РЕЖИССУРА</a>
+    <a href="#mod3">М3: МОНТАЖ</a>
+    <a href="#mod4">М4: УПАКОВКА</a>
+    <a href="#routine">РУТИНА</a>
+    <a href="#checklist-section">ЧЕК-ЛИСТ</a>
+    <a href="#refs">РЕФЕРЕНСЫ</a>
+    <a href="#library">БИБЛИОТЕКА</a>
+  </div>
+</nav>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<div class="main">
+
+<!-- ── INTRO ── -->
+<section class="module" id="intro">
+  <div class="module-header">
+    <div class="module-icon mod-orange">📋</div>
+    <div><h2>Вводная: О чём этот курс</h2></div>
+  </div>
+
+  <p>Этот курс — пошаговая операционная система для папы, который хочет делать крутые короткие видео о жизни своей семьи. Не теория — чистая практика с первого дня.</p>
+
+  <div class="quote">
+    «Лучшее оборудование — то, что у тебя в кармане. Лучший сюжет — тот, что происходит прямо сейчас. Лучшее время начать — вчера. Второе лучшее — сегодня.»
+    <span class="author">— Принцип №1 этого курса</span>
+  </div>
+
+  <h4 style="margin:1.5rem 0 1rem">🧩 Твои вводные данные</h4>
+  <table>
+    <tr><th style="width:35%">Параметр</th><th>Значение</th></tr>
+    <tr><td>Роль</td><td>Папа за кадром — оператор, рассказчик, провокатор</td></tr>
+    <tr><td>Героини</td><td>Василиса (4 года) 🌟 и Анфиса (2 года) 🌸 + мама эпизодически, кошка Цапа фоном</td></tr>
+    <tr><td>Техника</td><td>Poco F7 Ultra (съёмка + монтаж в CapCut), слабый ноутбук Win11</td></tr>
+    <tr><td>Свободное время</td><td>3–5 часов в будни (без детей), полный день в выходные</td></tr>
+    <tr><td>Архив</td><td>1200+ вертикальных роликов (1–3 мин), 100+ ГБ старых видео (2015–2020)</td></tr>
+    <tr><td>Текущая съёмка</td><td>~10 мин/день, хаотично</td></tr>
+    <tr><td>Уровень</td><td>Новичок, но умеет работать с нейросетями</td></tr>
+  </table>
+
+  <div class="tip">
+    <strong>Главная цель курса:</strong> За 6 недель создать банк из <strong>30 готовых смонтированных Shorts</strong> в черновиках. Пока нет 30 штук — канал не запускаем. Это твой «бетонный буфер» для спокойного старта.
+  </div>
+
+  <h4 style="margin:1.5rem 0 1rem">📐 Как устроено обучение</h4>
+  <p>Курс состоит из 4 модулей, каждый разбит на уроки-практикумы. Проходи по порядку — каждый следующий модуль опирается на предыдущий. Внутри каждого урока:</p>
+  <div style="margin:1rem 0 1rem 1rem">
+    <p>📖 <strong>Теория</strong> — минимум слов, максимум пользы</p>
+    <p>🎯 <strong>Практика</strong> — конкретное задание на день/неделю</p>
+    <p>✅ <strong>Чек-листы</strong> — чтобы ничего не забыть</p>
+    <p>💡 <strong>Советы</strong> — лайфхаки из реального опыта</p>
+  </div>
+
+  <h4 style="margin:1.5rem 0 1rem">🗺 Дорожная карта</h4>
+  <table>
+    <tr><th>Неделя</th><th>Модуль</th><th>Фокус</th><th>Результат</th></tr>
+    <tr><td>1–2</td><td>⛏️ Архив</td><td>Разбор 1200 роликов, поиск золота</td><td>20 нарезанных «бриллиантов»</td></tr>
+    <tr><td>2–3</td><td>🎬 Режиссура</td><td>Осознанная съёмка, провокации</td><td>10+ снятых по сценарию роликов</td></tr>
+    <tr><td>3–5</td><td>✂️ Монтаж</td><td>CapCut от базы до продвинутого</td><td>20+ полностью смонтированных Shorts</td></tr>
+    <tr><td>6</td><td>🚀 Упаковка</td><td>Названия, обложки, алгоритмы</td><td>30 Shorts готовы → ЗАПУСК!</td></tr>
+  </table>
+</section>
+
+<!-- ── TREE ── -->
+<section class="module" id="tree-section">
+  <div class="module-header">
+    <div class="module-icon mod-gold">📁</div>
+    <div><h2>Архитектура проекта (Дерево папок)</h2></div>
+  </div>
+  <p>Создай эту структуру папок прямо на телефоне и ПК. Это твоя файловая система на весь проект.</p>
+
+  <div class="tree">
+<span class="f">📦 YOUTUBE_SHORTS_DAD</span>
+ ┣ <span class="f">📂 01_АРХИВ_СЫРОЙ</span>
+ ┃ ┣ <span class="r">🔴 МУСОР (удалить после отсмотра)</span>
+ ┃ ┣ <span class="y">🟡 B-ROLL (перебивки, фон)</span>
+ ┃ ┗ <span class="g">🟢 ЗОЛОТО (готово к монтажу)</span>
+ ┣ <span class="f">📂 02_СЦЕНАРИИ</span>
+ ┃ ┣ <span class="g">📄 Банк_идей.txt</span>
+ ┃ ┣ <span class="g">📄 Провокации_на_неделю.txt</span>
+ ┃ ┗ <span class="g">📄 Перлы_Василисы.txt</span>
+ ┣ <span class="f">📂 03_В_РАБОТЕ</span>
+ ┃ ┣ <span class="g">📄 Черновик_001.capcut</span>
+ ┃ ┣ <span class="g">📄 Черновик_002.capcut</span>
+ ┃ ┗ <span class="g">📄 ...</span>
+ ┣ <span class="f">📂 04_ГОТОВЫЕ_SHORTS</span>
+ ┃ ┣ <span class="g">🎬 Short_001_финал.mp4</span>
+ ┃ ┣ <span class="g">🎬 Short_002_финал.mp4</span>
+ ┃ ┗ <span class="g">🎬 ... (цель: 30 штук)</span>
+ ┣ <span class="f">📂 05_РЕТРО_АРХИВ</span>
+ ┃ ┗ <span class="y">📂 Видео_2015-2020 (старший сын)</span>
+ ┣ <span class="f">📂 06_ЗВУКИ_И_МУЗЫКА</span>
+ ┃ ┣ <span class="g">🔊 SFX_вжух.mp3</span>
+ ┃ ┣ <span class="g">🔊 SFX_поп.mp3</span>
+ ┃ ┗ <span class="g">🎵 Фоновая_музыка/</span>
+ ┗ <span class="f">📂 07_УЧЁБА</span>
+   ┣ <span class="g">📓 Дневник_насмотренности.txt</span>
+   ┣ <span class="g">📓 Разбор_чужих_Shorts.txt</span>
+   ┗ <span class="g">📓 Мои_ошибки_и_выводы.txt</span>
+  </div>
+
+  <div class="tip">
+    <strong>Папки на телефоне:</strong> В файловом менеджере Poco создай те же папки. CapCut берёт исходники прямо из памяти телефона. Держи папку «ЗОЛОТО» в быстром доступе — ты будешь обращаться к ней каждый день.
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════ -->
+<!-- ═══════════ МОДУЛЬ 1: АРХИВ ═══════════ -->
+<!-- ═══════════════════════════════════════ -->
+<section class="module" id="mod1">
+  <div class="module-header">
+    <div class="module-icon mod-orange">⛏️</div>
+    <div>
+      <h2>Модуль 1: Золотая жила Архива</h2>
+      <span class="week-tag week-orange">Недели 1–2</span>
+    </div>
+  </div>
+
+  <div class="quote">
+    «У тебя 1200+ роликов. 95% — руда. Но 5% — чистое золото, способное набрать миллионы просмотров. Задача — научиться видеть разницу мгновенно.»
+  </div>
+
+  <!-- Урок 1.1 -->
+  <div class="lesson open">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 1.1 — Система сортировки «Светофор»</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <p>Прежде чем монтировать хоть что-то — разбери завал. Представь: ты золотодобытчик. Архив — карьер с породой. Цель — просеять и найти самородки.</p>
+
+      <h4 style="margin:1.2rem 0 .8rem">Три категории</h4>
+      <table>
+        <tr><th>Категория</th><th>Что это</th><th>Куда</th></tr>
+        <tr>
+          <td><span class="tag tag-red">🔴 МУСОР</span></td>
+          <td>Ничего не происходит, плохой звук, размыто, длинные «ни о чём»</td>
+          <td>Удалить или архивировать в дальнюю папку</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-yellow">🟡 B-ROLL</span></td>
+          <td>Красиво/мило, но нет сюжета. Играет, ест, гуляет — без яркого момента</td>
+          <td>Папка B-Roll: фон/перебивка под голос или музыку</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">🟢 ЗОЛОТО</span></td>
+          <td>Яркая эмоция! Смех, удивление, смешная фраза, падение (безопасное), реакция</td>
+          <td>Папка ЗОЛОТО → в монтаж</td>
+        </tr>
+      </table>
+
+      <h4 style="margin:1.2rem 0 .8rem">Как отличить «Золото» от «B-Roll»?</h4>
+      <p>Задай себе один вопрос: <strong>«Могу ли я описать это видео одним предложением, которое заставит незнакомца нажать Play?»</strong></p>
+      <div style="margin:.8rem 0 .8rem 1rem">
+        <p>✅ «Василиса объясняет, что такое работа» → <span class="tag tag-green">ЗОЛОТО</span></p>
+        <p>✅ «Анфиса впервые пробует лимон» → <span class="tag tag-green">ЗОЛОТО</span></p>
+        <p>❌ «Дети играют в комнате» → <span class="tag tag-yellow">B-ROLL</span></p>
+        <p>❌ «Идём по улице» → <span class="tag tag-yellow">B-ROLL</span></p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: Первый рейд по архиву</div>
+        <ol>
+          <li>Открой архив (первые 100 роликов)</li>
+          <li>Смотри каждый ролик на скорости ×2</li>
+          <li>За каждый ставь метку: 🔴/🟡/🟢 (переименуй файл или перемести в папку)</li>
+          <li><strong>Норма: 50 роликов за 2 часа</strong></li>
+          <li>Каждый 🟢 — запиши в заметку: имя файла + что происходит в одном предложении</li>
+        </ol>
+      </div>
+
+      <div class="tip">
+        Не трать на один ролик больше 30 секунд при отсмотре. Если за 10 секунд ничего не зацепило — это 🔴 или 🟡. Золото видно сразу.
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 1.2 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 1.2 — Поиск крючков и твистов</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <p>Ты отобрал «Золото». Но сырой ролик — ещё не Shorts. Нужно найти <strong>точку входа</strong> (крючок) и <strong>точку выхода</strong> (панчлайн).</p>
+
+      <h4 style="margin:1.2rem 0 .8rem">Анатомия вирусного момента</h4>
+      <table>
+        <tr><th>Элемент</th><th>Что это</th><th>Пример</th></tr>
+        <tr>
+          <td><strong>🪝 Крючок</strong></td>
+          <td>Первые 1–3 сек. Остановить скролл</td>
+          <td>Василиса с серьёзным лицом: «Папа, мне надо тебе кое-что сказать...»</td>
+        </tr>
+        <tr>
+          <td><strong>⚡ Развитие</strong></td>
+          <td>Нарастание интриги (3–10 сек)</td>
+          <td>Она разворачивает рисунок...</td>
+        </tr>
+        <tr>
+          <td><strong>💥 Панчлайн</strong></td>
+          <td>Развязка. Хочется пересмотреть</td>
+          <td>На рисунке — «папа работает» (палка за компьютером)</td>
+        </tr>
+      </table>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: Нарезка «бриллиантов»</div>
+        <ol>
+          <li>Возьми 10 своих 🟢 роликов</li>
+          <li>В каждом найди ровно один «бриллиант» — отрезок 5–20 секунд</li>
+          <li>Открой CapCut → вырежи только этот кусок → сохрани черновик</li>
+          <li>Назови по формуле: <code>Тема_ДатаСъёмки</code></li>
+          <li><strong>Цель: 10 «бриллиантов» за первую неделю</strong></li>
+        </ol>
+      </div>
+
+      <h4 style="margin:1.2rem 0 .8rem">Ретро-архив (2015–2020): два золотых формата</h4>
+
+      <div class="scenario">
+        <h4>🎞 «Тогда и сейчас»</h4>
+        <p>Разделённый экран. Слева — старший сын в 2016 (первые шаги, смешные слова). Справа — Анфиса в 2024 делает то же самое. Титр: «Разница — 8 лет. Копия — 100%». Огромный engagement.</p>
+      </div>
+
+      <div class="scenario">
+        <h4>🎞 «Реакция сына на себя маленького»</h4>
+        <p>Покажи 17-летнему сыну его видео из 2016. Сними реакцию (даже стеснение — это контент). Если он согласится.</p>
+      </div>
+
+      <div class="warn">
+        <strong>Не тони в ретро-архиве!</strong> Максимум 30 мин в день. Главный приоритет — свежий архив из 1200 роликов с дочками.
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 1.3 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 1.3 — Банк идей и «Перлы Василисы»</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <p>Параллельно с разбором архива заведи два важнейших документа. Они будут кормить тебя идеями месяцами.</p>
+
+      <h4 style="margin:1rem 0 .5rem">📝 Документ 1: «Перлы Василисы»</h4>
+      <p>Заметка в телефоне. Записывай ВСЁ смешное, мудрое, необычное, что говорят дети. Не «потом» — прямо сейчас.</p>
+
+      <div class="settings-block">
+<strong>Пример записей:</strong>
+📅 15.01 — В.: «Папа, а бабочки зимой спят в облаках?»
+📅 16.01 — А.: (увидела кота) — визжит, пытается обнять за хвост
+📅 17.01 — В.: «Я хочу на работу, как мама. Только без работы.»
+      </div>
+
+      <h4 style="margin:1rem 0 .5rem">📝 Документ 2: «Банк идей»</h4>
+      <p>Идеи для провокаций и сценариев. Одна строка = одна идея.</p>
+
+      <div class="settings-block">
+<strong>Пример записей:</strong>
+💡 Дать Анфисе половник вместо ложки → снять реакцию
+💡 Спросить В.: «Что такое налоги?»
+💡 «Не открывай коробку» (скрытая камера)
+💡 Дать Василисе позвонить по игрушечному телефону: «Кому звонишь?»
+💡 Тогда и сейчас: сын 2016 vs Анфиса 2024 — первый шаг
+💡 Невидимый чай для папы
+💡 Повторяй за ребёнком всё, что она делает
+      </div>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: Запуск банка</div>
+        <ol>
+          <li>Создай оба документа в заметках телефона прямо сейчас</li>
+          <li>Запиши 5 «перлов» по памяти (вспомни последние дни)</li>
+          <li>Запиши 10 идей для провокаций</li>
+          <li><strong>Правило: минимум 1 запись в каждый документ каждый день</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h4 style="margin:1.5rem 0 .8rem;font-size:1rem">📊 Метрика прогресса Модуля 1</h4>
+  <table>
+    <tr><th>Показатель</th><th>Цель к концу недели 2</th></tr>
+    <tr><td>Роликов отсмотрено</td><td>500+ из 1200</td></tr>
+    <tr><td>🟢 «Золото» найдено</td><td>25–40 клипов</td></tr>
+    <tr><td>Нарезанных «бриллиантов»</td><td>20 штук</td></tr>
+    <tr><td>Записей в «Перлы Василисы»</td><td>14+</td></tr>
+    <tr><td>Идей в «Банке идей»</td><td>20+</td></tr>
+  </table>
+</section>
+
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ═══════════ МОДУЛЬ 2: РЕЖИССУРА ═══════════ -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="module" id="mod2">
+  <div class="module-header">
+    <div class="module-icon mod-green">🎬</div>
+    <div>
+      <h2>Модуль 2: Режиссура реальности</h2>
+      <span class="week-tag week-green">Недели 2–3</span>
+    </div>
+  </div>
+
+  <div class="quote">
+    «Хватит ждать чуда с включённой камерой. Ты не оператор видеонаблюдения. Ты — режиссёр реальности.»
+  </div>
+
+  <!-- Урок 2.1 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 2.1 — Хватит снимать всё подряд</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <p>«Снимаю минут по 10, пытаюсь поймать моменты» — это типичная ловушка. Из 10 минут в лучшем случае пригодятся 8–15 секунд. Остальное — мусор.</p>
+
+      <h4 style="margin:1.2rem 0 .8rem">Два режима съёмки</h4>
+      <table>
+        <tr><th>Режим</th><th>Когда</th><th>Как</th><th>Длительность</th></tr>
+        <tr>
+          <td><span class="tag tag-green">🎯 Провокация</span></td>
+          <td>Заранее придумал ситуацию</td>
+          <td>Подготовь реквизит, включи камеру, создай ситуацию</td>
+          <td>1–3 мин</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-yellow">👁 Охота</span></td>
+          <td>Что-то необычное начинается</td>
+          <td>Хватай телефон, снимай максимально быстро</td>
+          <td>30 сек – 2 мин</td>
+        </tr>
+      </table>
+
+      <h4 style="margin:1.2rem 0 .8rem">🧪 Арсенал провокаций</h4>
+
+      <div class="scenario">
+        <h4>🧊 Тип 1: Нарушение паттерна</h4>
+        <p>Дай привычный предмет, но «сломанный». Ложку великана вместо обычной. Тарелку на голову. Надень носок на руку и разговаривай от имени «Носки». Ребёнок ожидает одно, получает другое → удивление → контент.</p>
+      </div>
+
+      <div class="scenario">
+        <h4>🚪 Тип 2: Запретный плод</h4>
+        <p>Поставь коробку. Скажи: «Только не открывай, пока я не вернусь». Включи камеру на штатив (стопка книг). Выйди из комнаты. 100% дети откроют за 10–30 секунд. Ускорь на монтаже — классика.</p>
+      </div>
+
+      <div class="scenario">
+        <h4>❓ Тип 3: Вопрос-ловушка</h4>
+        <p>Спрашивай 4-летнюю Василису «взрослые» вещи: «Что такое ипотека?», «Как заработать миллион?», «Почему папа устаёт?», «Что делает президент?». Ответы будут гениальными. Формат на миллионы просмотров.</p>
+      </div>
+
+      <div class="scenario">
+        <h4>🎭 Тип 4: Невидимый реквизит</h4>
+        <p>«Василиса, принеси папе невидимый чай.» «Анфиса, погладь невидимую собаку.» Дети принимают условия и импровизируют. Трогательно и смешно одновременно.</p>
+      </div>
+
+      <div class="scenario">
+        <h4>🪞 Тип 5: Зеркало</h4>
+        <p>Повторяй за ребёнком всё. Берёт печеньку — ты берёшь. Прыгает — прыгаешь. Через 30 сек она начнёт тестировать границы. Чистая комедия.</p>
+      </div>
+
+      <div class="scenario">
+        <h4>🍋 Тип 6: Первый опыт</h4>
+        <p>Дай ребёнку попробовать/увидеть/потрогать что-то впервые: лимон, мыльные пузыри зимой, лёд, магнит, слайм. Реакция «первого раза» — один из самых виральных форматов в мире.</p>
+      </div>
+
+      <div class="scenario">
+        <h4>📞 Тип 7: Ролевая игра</h4>
+        <p>«Василиса, ты теперь мама, а я — ребёнок. Командуй!» Или: «Ты — доктор, лечи папу». Дети копируют взрослых с гениальной точностью. Контент сам себя пишет.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: Первые провокации</div>
+        <ol>
+          <li>Выбери 3 провокации из списка</li>
+          <li>Запланируй по одной на каждый вечер</li>
+          <li>Подготовь реквизит заранее (пока дети спят)</li>
+          <li>Снимай ВЕРТИКАЛЬНО, камера на уровне глаз ребёнка</li>
+          <li><strong>Цель: 3 провокации за 3 дня, каждая ≤ 2 мин съёмки</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 2.2 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 2.2 — Оператор со смартфоном: настройки Poco F7</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <h4 style="margin:1rem 0 .8rem">⚙️ Настройки камеры</h4>
+      <div class="settings-block">
+<strong>Разрешение:</strong> 4K (3840×2160) или 1080p 60fps
+<strong>Частота кадров:</strong> 60 fps (плавность, алгоритмы любят)
+<strong>Стабилизация:</strong> ВКЛ (OIS + EIS)
+<strong>HDR видео:</strong> ВЫКЛ (усложняет монтаж)
+<strong>Автофокус:</strong> Следящий (тапни по ребёнку)
+<strong>Ориентация:</strong> ВСЕГДА вертикально (9:16)
+<strong>Перед съёмкой:</strong> ПРОТРИ ЛИНЗУ! 🧹
+      </div>
+
+      <h4 style="margin:1.2rem 0 .8rem">📐 5 операторских правил</h4>
+      <div class="steps">
+        <div class="step">
+          <div class="step-content">
+            <h4>Камера на уровне глаз ребёнка</h4>
+            <p>Присядь! Снимать сверху вниз — ошибка. Мир глазами ребёнка = эмоциональная связь со зрителем.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-content">
+            <h4>Свет — из окна</h4>
+            <p>Поверни ребёнка лицом к окну. Не снимай против окна (силуэт). Дневной свет — лучший, бесплатный и красивый.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-content">
+            <h4>Правило «1 метр»</h4>
+            <p>Снимай с ~1 метра. Ближе — искажения. Дальше — теряются эмоции и звук.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-content">
+            <h4>Не дёргай камеру</h4>
+            <p>Прижми локти к телу. Если ребёнок бежит — иди, не беги (тряска убивает). Лучше статичный кадр, как ребёнок убегает.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-content">
+            <h4>Начинай записывать ДО момента</h4>
+            <p>Включи камеру за 5 сек до действия. Лучше обрезать начало, чем упустить первую реакцию.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip">
+        <strong>Мини-штатив:</strong> Купи гибкий трипод-осьминог за 500₽. Обмотай за ножку стула — получишь «скрытую камеру» без рук. Идеально для «Запретного плода».
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 2.3 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 2.3 — Сценарий из быта: 5 формул</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <p>Каждый день с детьми — десятки микро-сюжетов. Вот 5 формул для превращения быта в контент:</p>
+
+      <table>
+        <tr><th>#</th><th>Формула</th><th>Пример</th></tr>
+        <tr>
+          <td><strong>1</strong></td>
+          <td><strong>Ожидание vs Реальность</strong></td>
+          <td>Идеальное утро (Instagram) vs Реальное утро (каша на стенах)</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td><strong>Вопрос → Гениальный ответ</strong></td>
+          <td>Титр: «Спросил 4-летнюю: что такое любовь?» → ответ</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td><strong>POV (от первого лица)</strong></td>
+          <td>«POV: слышишь шёпот "Папааа..."» → лицо дочки в 6 утра</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td><strong>Челлендж/Испытание</strong></td>
+          <td>«Попросил двухлетку нарисовать маму» → шедевр</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td><strong>Тихий момент + музыка</strong></td>
+          <td>Василиса обнимает Анфису. Замедленная съёмка. Мягкая музыка.</td>
+        </tr>
+      </table>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: 5 мини-сценариев</div>
+        <ol>
+          <li>По каждой из 5 формул напиши мини-сценарий (2–3 предложения)</li>
+          <li>Пометь нужный реквизит</li>
+          <li>Выбери 2 и сними на этой неделе</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h4 style="margin:1.5rem 0 .8rem;font-size:1rem">📊 Метрика прогресса Модуля 2</h4>
+  <table>
+    <tr><th>Показатель</th><th>Цель к концу недели 3</th></tr>
+    <tr><td>Провокаций проведено</td><td>10+</td></tr>
+    <tr><td>Снято «по сценарию»</td><td>10+</td></tr>
+    <tr><td>Мини-сценариев в банке</td><td>15+</td></tr>
+    <tr><td>Средняя длина съёмки</td><td>1–3 мин (не 10!)</td></tr>
+  </table>
+</section>
+
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ═══════════ МОДУЛЬ 3: МОНТАЖ ═══════════ -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="module" id="mod3">
+  <div class="module-header">
+    <div class="module-icon mod-blue">✂️</div>
+    <div>
+      <h2>Модуль 3: Монтаж на кончиках пальцев</h2>
+      <span class="week-tag week-blue">Недели 3–5</span>
+    </div>
+  </div>
+
+  <div class="quote">
+    «Монтаж — не украшение. Это управление вниманием. Каждую секунду ты решаешь: зритель остаётся или уходит.»
+  </div>
+
+  <!-- Урок 3.1 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 3.1 — Базовый CapCut: от нуля до первого ролика</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <p>CapCut на Poco F7 Ultra — полноценная студия. Не нужен слабый ноутбук. Всё — на телефоне.</p>
+
+      <h4 style="margin:1rem 0 .8rem">🔧 Настройка проекта</h4>
+      <div class="settings-block">
+<strong>Новый проект:</strong> CapCut → «+» → Соотношение: 9:16
+<strong>Разрешение экспорта:</strong> 1080p
+<strong>Частота кадров:</strong> 60 fps
+<strong>Формат:</strong> MP4
+<strong>Качество:</strong> Высокое (не «Рекомендуемое»!)
+      </div>
+
+      <h4 style="margin:1.2rem 0 .8rem">✂️ 8 главных инструментов</h4>
+      <div class="steps">
+        <div class="step"><div class="step-content">
+          <h4>Обрезка (Split)</h4>
+          <p>Ставишь головку на нужный момент → «Разделить» → удаляешь ненужный кусок. <strong>Если сомневаешься — вырезай.</strong></p>
+        </div></div>
+        <div class="step"><div class="step-content">
+          <h4>Jump Cut</h4>
+          <p>Вырезай ВСЕ паузы, вздохи, «ммм». В Shorts зритель не ждёт. Видео 1 мин → после нарезки 18–35 сек.</p>
+        </div></div>
+        <div class="step"><div class="step-content">
+          <h4>Зум (Keyframes)</h4>
+          <p>Выдели клип → «Ключевые кадры» → на смешной фразе увеличь до 130–150%. Резкий зум = возврат внимания.</p>
+        </div></div>
+        <div class="step"><div class="step-content">
+          <h4>Автосубтитры</h4>
+          <p>«Текст» → «Автокаптионс» → русский. Проверь ошибки! Стиль: жирный, белый/жёлтый, чёрная обводка, 1–3 слова на экран.</p>
+        </div></div>
+        <div class="step"><div class="step-content">
+          <h4>Скорость</h4>
+          <p>×1.5–2 для переходных моментов. ×0.5 для эмоциональных пиков. Контраст скоростей = драматургия.</p>
+        </div></div>
+        <div class="step"><div class="step-content">
+          <h4>Звуковые эффекты (SFX)</h4>
+          <p>«Аудио» → «Звуки»: whoosh (вжух), pop, ding, laugh. «Вжух» на смене кадра, «поп» при тексте. +20–30% удержание.</p>
+        </div></div>
+        <div class="step"><div class="step-content">
+          <h4>Фоновая музыка</h4>
+          <p>«Аудио» → «Музыка» (библиотека CapCut, бесплатная). Весёлые укулеле / мягкое пиано. Громкость = 15–25% от речи.</p>
+        </div></div>
+        <div class="step"><div class="step-content">
+          <h4>Текст-крючок</h4>
+          <p>В первые 1–3 сек добавь крупный текст: «Оставил дочек одних на 2 минуты...». Крючок для тех, кто без звука.</p>
+        </div></div>
+      </div>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: Первый Shorts от А до Я</div>
+        <ol>
+          <li>Возьми 1 «бриллиант» из папки ЗОЛОТО</li>
+          <li>Импортируй в CapCut (9:16)</li>
+          <li>Обрежь всё лишнее</li>
+          <li>Добавь 1 зум на ключевой момент</li>
+          <li>Включи автосубтитры, исправь ошибки</li>
+          <li>Текст-крючок в первые 3 сек</li>
+          <li>2–3 звуковых эффекта</li>
+          <li>Фоновая музыка (20%)</li>
+          <li>Экспорт: 1080p, 60fps, высокое</li>
+          <li><strong>Время: 30–45 мин первый, потом 15–20 мин</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 3.2 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 3.2 — Ритм, саунд-дизайн и удержание</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <h4 style="margin:1rem 0 .8rem">🥁 Правило «2–3 секунды»</h4>
+      <p>Каждые 2–3 секунды должно что-то измениться визуально:</p>
+      <div style="margin:.8rem 0 .8rem 1rem">
+        <p>✅ Смена кадра/ракурса &nbsp; ✅ Зум &nbsp; ✅ Появление текста</p>
+        <p>✅ Звуковой эффект &nbsp; ✅ Эмодзи/стикер &nbsp; ✅ Изменение скорости</p>
+      </div>
+
+      <h4 style="margin:1.2rem 0 .8rem">🎵 Слои звука</h4>
+      <table>
+        <tr><th>Слой</th><th>Что</th><th>Громкость</th></tr>
+        <tr><td>🗣 Голос</td><td>Речь детей, закадровый голос</td><td>100%</td></tr>
+        <tr><td>🎵 Музыка</td><td>Фоновый трек</td><td>15–25%</td></tr>
+        <tr><td>🔊 SFX</td><td>Вжухи, попы, бум</td><td>50–70%</td></tr>
+        <tr><td>😂 Реакции</td><td>Смех, «ооох», «вау»</td><td>40–60%</td></tr>
+      </table>
+
+      <h4 style="margin:1.2rem 0 .8rem">🎙 Закадровый голос — твоя суперсила</h4>
+      <div class="scenario">
+        <h4>Формат А: Папа-комментатор</h4>
+        <p>На видео — хаос. Ты за кадром как спортивный комментатор: «Анфиса делает рывок к торту... Василиса перехватывает... Нет! Торт не выдержал!»</p>
+      </div>
+      <div class="scenario">
+        <h4>Формат Б: Озвучка мыслей</h4>
+        <p>Озвучиваешь «мысли» ребёнка. Анфиса смотрит на кота — ты: «Значит так, Цапа... Мне два года, тебе пять. Пора поговорить о границах.»</p>
+      </div>
+
+      <div class="tip">
+        Запись закадрового голоса: CapCut → «Аудио» → «Озвучка». Говори в 15 см от микрофона, в тихой комнате. Записывай, когда дети спят!
+      </div>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: Ритм-пакет</div>
+        <ol>
+          <li>Возьми смонтированный черновик</li>
+          <li>Пройди по секундам: каждые 2–3 сек что-то меняется? Если нет — добавь зум/текст/SFX</li>
+          <li>Запиши закадровый голос, наложи поверх</li>
+          <li><strong>Цель: 3 ролика с полным саунд-дизайном</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 3.3 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 3.3 — Продвинутый CapCut: эффекты и шаблоны</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <table>
+        <tr><th>Приём</th><th>Как</th><th>Когда</th></tr>
+        <tr><td><strong>Split Screen</strong></td><td>«Наложение» → видео → «Маска» → пополам</td><td>«Тогда и сейчас», «Ожидание vs Реальность»</td></tr>
+        <tr><td><strong>Удаление фона</strong></td><td>«Наложение» → «Удалить фон»</td><td>Ребёнок на смешном фоне (космос, джунгли)</td></tr>
+        <tr><td><strong>Slow-mo</strong></td><td>Скорость ×0.3 на 2–3 сек + эпичная музыка</td><td>Объятия, «победный» момент</td></tr>
+        <tr><td><strong>Freeze Frame</strong></td><td>Экспортируй кадр → вставь на 1.5 сек + «рекорд скретч»</td><td>Комедийная пауза «Ага, вот этот момент...»</td></tr>
+        <tr><td><strong>Текст с анимацией</strong></td><td>«Текст» → «Анимация» → Pop/Slide</td><td>Крючок, акцент субтитров</td></tr>
+      </table>
+
+      <div class="warn">
+        <strong>Не перебарщивай!</strong> 1–2 продвинутых приёма на ролик. Если в 20-секундном Shorts будет всё и сразу — зритель устанет.
+      </div>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: Мастер эффектов</div>
+        <ol>
+          <li>1 ролик с split screen (ретро слева, свежее справа)</li>
+          <li>1 ролик с freeze frame + комедийная пауза</li>
+          <li>1 ролик с slow-mo на эмоциональном моменте</li>
+          <li><strong>Каждый приём = отдельный ролик</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h4 style="margin:1.5rem 0 .8rem;font-size:1rem">📊 Метрика прогресса Модуля 3</h4>
+  <table>
+    <tr><th>Показатель</th><th>Цель к концу недели 5</th></tr>
+    <tr><td>Смонтированных Shorts</td><td>20+</td></tr>
+    <tr><td>С закадровым голосом</td><td>5+</td></tr>
+    <tr><td>Среднее время монтажа</td><td>15–25 мин</td></tr>
+    <tr><td>Продвинутых приёмов освоено</td><td>3+</td></tr>
+  </table>
+</section>
+
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- ═══════════ МОДУЛЬ 4: УПАКОВКА ═══════════ -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="module" id="mod4">
+  <div class="module-header">
+    <div class="module-icon mod-gold">🚀</div>
+    <div>
+      <h2>Модуль 4: Упаковка и подготовка к запуску</h2>
+      <span class="week-tag week-gold">Неделя 6</span>
+    </div>
+  </div>
+
+  <!-- Урок 4.1 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 4.1 — Названия, обложки, хештеги</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <h4 style="margin:1rem 0 .8rem">📝 Формула названия</h4>
+      <div class="settings-block">
+<strong>Формула:</strong> [Эмоция/Интрига] + [Конкретика]
+
+✅ «Спросил дочку, что такое ипотека 😂»
+✅ «Оставил 2-летку одну на 30 секунд...»
+✅ «Когда старшая учит младшую плохому 🫣»
+
+❌ «Видео #34» (пусто)
+❌ «Дочки» (нет интриги)
+❌ «Наш обычный день, смешной момент на кухне» (длинно)
+      </div>
+
+      <h4 style="margin:1rem 0 .8rem">🖼 Обложка</h4>
+      <div style="margin:.8rem 0 .8rem 1rem">
+        <p>1. Поставь головку на выразительный кадр → экспортируй как фото</p>
+        <p>2. Добавь крупный текст (2–4 слова): «ЧТО?!», «ЗАЧЕМ?», «ИПОТЕКА?!»</p>
+        <p>3. Яркие цвета, крупное лицо, эмоция</p>
+      </div>
+
+      <h4 style="margin:1rem 0 .8rem"># Хештеги (3–5 в описание)</h4>
+      <div class="settings-block">
+<strong>Базовые:</strong> #shorts #дети #семья
+<strong>Тематические:</strong> #папаидочки #детскиеперлы #родители
+<strong>Ситуативные:</strong> #василисаговорит #2годика #ожиданиеvsреальность
+      </div>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: Упаковка 10 роликов</div>
+        <ol>
+          <li>Для каждого из 10 готовых Shorts напиши 3 варианта названия</li>
+          <li>Выбери лучший (какой бы зацепил при скролле?)</li>
+          <li>Сделай обложку для каждого</li>
+          <li>Подбери 3–5 хештегов</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 4.2 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 4.2 — Алгоритмы YouTube Shorts</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <h4 style="margin:1rem 0 .8rem">📊 4 главных метрики</h4>
+      <table>
+        <tr><th>Метрика</th><th>Что это</th><th>Как влияешь</th></tr>
+        <tr><td><strong>Удержание</strong></td><td>% досмотра</td><td>Jump cuts, зумы, SFX, ритм</td></tr>
+        <tr><td><strong>Пересмотры</strong></td><td>Смотрят повторно?</td><td>Неожиданный финал, короткие (15–25 сек)</td></tr>
+        <tr><td><strong>Вовлечение</strong></td><td>Лайки, комменты, репосты</td><td>Спорные/милые моменты</td></tr>
+        <tr><td><strong>CTR</strong></td><td>Кликабельность</td><td>Интригующее название, яркое превью</td></tr>
+      </table>
+
+      <div class="tip">
+        <strong>Самая важная — удержание.</strong> 70%+ досматривают → YouTube покажет в 10× большей аудитории. Shorts на 15 сек с 90% удержанием &gt; 59 сек с 30%.
+      </div>
+
+      <h4 style="margin:1rem 0 .8rem">📅 Стратегия публикации</h4>
+      <div style="margin:.8rem 0 .8rem 1rem">
+        <p>📌 <strong>Частота:</strong> 1 Shorts/день, 7 дней/неделю (первые 30 дней)</p>
+        <p>📌 <strong>Время:</strong> 18:00–20:00 (пик семейной аудитории в РФ)</p>
+        <p>📌 <strong>Буфер:</strong> Именно поэтому 30 Shorts до запуска = месяц контента</p>
+        <p>📌 <strong>Тест:</strong> Первые 30 — эксперимент. Смотри что залетает. Не расстраивайся из-за нулей</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: Запуск!</div>
+        <ol>
+          <li>Есть 30 готовых Shorts? Если нет — домонтируй</li>
+          <li>У каждого есть название? Обложка? Хештеги?</li>
+          <li>Создай канал (имя, аватар, описание)</li>
+          <li>Загрузи первые 7 как «запланированные» (YouTube Studio)</li>
+          <li><strong>Нажми «Опубликовать» и начинай!</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Урок 4.3 -->
+  <div class="lesson">
+    <div class="lesson-head" onclick="toggle(this)">
+      <h3>📄 4.3 — Аналитика первых недель: что смотреть</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="lesson-body">
+      <p>После запуска начинается самое интересное — обратная связь от алгоритма. Вот что отслеживать:</p>
+
+      <h4 style="margin:1rem 0 .8rem">📈 Еженедельный аудит (YouTube Studio → Аналитика)</h4>
+      <table>
+        <tr><th>Метрика</th><th>Где смотреть</th><th>Хорошо</th><th>Плохо</th></tr>
+        <tr><td>Средний % просмотра</td><td>Аналитика → Удержание</td><td>60%+</td><td>&lt;40%</td></tr>
+        <tr><td>Показы</td><td>Аналитика → Охват</td><td>1000+</td><td>&lt;100</td></tr>
+        <tr><td>CTR</td><td>Аналитика → Охват</td><td>5%+</td><td>&lt;2%</td></tr>
+        <tr><td>Лайки/Просмотры</td><td>Аналитика → Вовлечение</td><td>5%+</td><td>&lt;1%</td></tr>
+      </table>
+
+      <h4 style="margin:1rem 0 .8rem">🔍 Что делать с данными</h4>
+      <div style="margin:.8rem 0 .8rem 1rem">
+        <p>📊 <strong>Ролик набрал 70%+ удержания?</strong> → Делай больше таких. Анализируй: какой формат, какой крючок, какая длина.</p>
+        <p>📊 <strong>Удержание ниже 40%?</strong> → Проблема в первых 3 секундах (слабый крючок) или в середине (скучное развитие). Посмотри график удержания — где зритель уходит?</p>
+        <p>📊 <strong>Мало показов?</strong> → Алгоритму нужно время. Продолжай публиковать 1/день. Не удаляй «неуспешные» ролики!</p>
+        <p>📊 <strong>Много комментов?</strong> → Отвечай на каждый! Алгоритм любит комментарии.</p>
+      </div>
+
+      <div class="practice">
+        <div class="practice-title">🎯 Задание: Первый аналитический разбор</div>
+        <ol>
+          <li>После 7 дней публикаций открой YouTube Studio</li>
+          <li>Найди свой лучший ролик (по просмотрам) и худший</li>
+          <li>Запиши в «Мои ошибки и выводы»: чем они отличаются?</li>
+          <li>Сделай 3 новых ролика «по образцу лучшего»</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ -->
+<!-- ═══════════ РУТИНА ═══════════ -->
+<!-- ═══════════════════════ -->
+<section class="module" id="routine">
+  <div class="module-header">
+    <div class="module-icon mod-red">🗓</div>
+    <div><h2>Ежедневная рутина: 3–5 часов</h2></div>
+  </div>
+
+  <p>Твой рабочий день продюсера, пока дети в садике или спят:</p>
+
+  <table>
+    <tr><th style="width:12%">Час</th><th style="width:15%">Блок</th><th style="width:35%">Задача</th><th>Детали</th></tr>
+    <tr><td><strong>1-й</strong></td><td>🕵️ Раскопки</td><td>Просмотр архива / вчерашних съёмок</td><td>«Светофор». 3–5 «бриллиантов»/день</td></tr>
+    <tr><td><strong>2-й</strong></td><td>✂️ Хирургия</td><td>Монтаж в CapCut</td><td>Нарезка, jump cuts, зумы</td></tr>
+    <tr><td><strong>3-й</strong></td><td>📝 Упаковка</td><td>Субтитры, SFX, музыка, закадр</td><td>1–2 ролика до «финал»</td></tr>
+    <tr><td><strong>4-й</strong></td><td>🧠 Учёба</td><td>Насмотренность + книги</td><td>Чужие Shorts + библиотека</td></tr>
+    <tr><td><strong>5-й</strong></td><td>🎯 Планирование</td><td>Сценарии на завтра</td><td>1–2 провокации + реквизит</td></tr>
+  </table>
+
+  <div class="tip">
+    <strong>Если только 3 часа:</strong> «Раскопки» + «Хирургия» + «Упаковка» = обязательны. «Учёбу» слушай в аудиокнигах параллельно (посуда, прогулки).
+  </div>
+
+  <h4 style="margin:1.5rem 0 .8rem;font-size:1rem">⚡ Съёмочные дни (когда дети рядом)</h4>
+  <table>
+    <tr><th>Когда</th><th>Что делать</th></tr>
+    <tr><td>Утро (1 час до садика)</td><td>1 провокация или «охота» → 1–3 мин съёмки</td></tr>
+    <tr><td>Вечер (1 час перед сном)</td><td>1 провокация или вопрос-ловушка → 1–3 мин</td></tr>
+    <tr><td>В течение дня</td><td>Записывай «перлы» в заметку, телефон наготове</td></tr>
+    <tr><td>Выходные</td><td>Полный съёмочный день: 3–5 провокаций + свободная «охота»</td></tr>
+  </table>
+
+  <h4 style="margin:1.5rem 0 .8rem;font-size:1rem">📆 Понедельный план на 6 недель</h4>
+  <table>
+    <tr><th>Неделя</th><th>Фокус</th><th>Ключевое действие</th><th>Результат</th></tr>
+    <tr><td>1</td><td>⛏️ Архив</td><td>Отсмотр 300 роликов, нарезка 10 бриллиантов</td><td>10 черновиков</td></tr>
+    <tr><td>2</td><td>⛏️ Архив + 🎬 Режиссура</td><td>Отсмотр ещё 200, первые 3 провокации</td><td>20 черновиков, 3 новых съёмки</td></tr>
+    <tr><td>3</td><td>🎬 Режиссура + ✂️ Монтаж</td><td>7 провокаций, базовый монтаж 10 роликов</td><td>10 смонтированных Shorts</td></tr>
+    <tr><td>4</td><td>✂️ Монтаж</td><td>Продвинутый CapCut, закадровый голос</td><td>20 смонтированных Shorts</td></tr>
+    <tr><td>5</td><td>✂️ Монтаж + 🚀 Упаковка</td><td>Доведение до 30, названия и обложки</td><td>30 готовых Shorts</td></tr>
+    <tr><td>6</td><td>🚀 ЗАПУСК</td><td>Создание канала, публикация первых 7</td><td>КАНАЛ ЗАПУЩЕН! 🎉</td></tr>
+  </table>
+</section>
+
+
+<!-- ═══════════════════════ -->
+<!-- ═══════════ ЧЕКЛИСТ ═══════════ -->
+<!-- ═══════════════════════ -->
+<section class="module" id="checklist-section">
+  <div class="module-header">
+    <div class="module-icon mod-green">☑️</div>
+    <div><h2>Чек-лист качества Shorts</h2></div>
+  </div>
+
+  <p>Перед тем как сохранить готовый ролик — проверь все пункты:</p>
+
+  <div class="checklist">
+    <label><input type="checkbox"><span><strong>🪝 Правило 3 секунд:</strong> В первые 3 сек понятно, что будет интересно? Есть действие или текст-крючок?</span></label>
+    <label><input type="checkbox"><span><strong>🔇 Тест без звука:</strong> Сюжет понятен без звука? Субтитры читаемы?</span></label>
+    <label><input type="checkbox"><span><strong>🥁 Ритм:</strong> Каждые 2–3 сек что-то меняется (зум, текст, кадр, SFX)?</span></label>
+    <label><input type="checkbox"><span><strong>⏱ Длина:</strong> Короче 45 секунд? (Идеально 15–35 сек)</span></label>
+    <label><input type="checkbox"><span><strong>💥 Панчлайн:</strong> Чёткий финал — шутка, эмоция, неожиданность?</span></label>
+    <label><input type="checkbox"><span><strong>🔊 Звук:</strong> Голос слышно? Музыка не перебивает? SFX на местах?</span></label>
+    <label><input type="checkbox"><span><strong>📱 Вертикаль:</strong> 9:16? Нет чёрных полос?</span></label>
+    <label><input type="checkbox"><span><strong>📝 Субтитры:</strong> Включены, ошибки исправлены, стиль настроен?</span></label>
+    <label><input type="checkbox"><span><strong>💾 Качество:</strong> 1080p, 60fps, высокое?</span></label>
+    <label><input type="checkbox"><span><strong>🔁 Тест на повтор:</strong> Хочется пересмотреть?</span></label>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ -->
+<!-- ═══════════ РЕФЕРЕНСЫ ═══════════ -->
+<!-- ═══════════════════════ -->
+<section class="module" id="refs">
+  <div class="module-header">
+    <div class="module-icon mod-orange">👁</div>
+    <div><h2>Референсы: на кого смотреть</h2></div>
+  </div>
+
+  <p>Каждый день — 20 мин на анализ чужих Shorts. Не просто смотри — анализируй: крючок, ритм, финал.</p>
+
+  <div class="ref-grid">
+    <div class="ref-card">
+      <h4>🎤 @Zeth</h4>
+      <p>Аудио смешных разговоров с 4-летней дочерью → визуальные Shorts. Золотой стандарт формата «детские перлы».</p>
+      <div class="ref-tag"><span class="tag tag-green">Твой идеальный референс</span></div>
+    </div>
+    <div class="ref-card">
+      <h4>👨‍👩‍👧 @TheHoldernessFamily</h4>
+      <p>Семейные скетчи и пародии. Провокации, которые весело и безопасно делать с детьми.</p>
+      <div class="ref-tag"><span class="tag tag-yellow">Скетчи</span></div>
+    </div>
+    <div class="ref-card">
+      <h4>👨‍👧 @Super_Papka</h4>
+      <p>Русскоязычный контент. Диалоги отца и ребёнка. Простой, но работающий формат. Близок к твоему стилю.</p>
+      <div class="ref-tag"><span class="tag tag-green">RU-сегмент</span></div>
+    </div>
+    <div class="ref-card">
+      <h4>👨‍👧‍👦 @LaBrantFam</h4>
+      <p>Ранний контент: мини-скетчи отца и маленькой дочки. Челленджи и милые моменты.</p>
+      <div class="ref-tag"><span class="tag tag-yellow">Челленджи</span></div>
+    </div>
+    <div class="ref-card">
+      <h4>📱 Топ Shorts в трендах</h4>
+      <p>YouTube → Shorts → популярные. Анализируй 5 роликов/день из всех жанров, не только семейных.</p>
+      <div class="ref-tag"><span class="tag tag-blue">Насмотренность</span></div>
+    </div>
+    <div class="ref-card">
+      <h4>🎬 TikTok: #dadlife</h4>
+      <p>TikTok — лаборатория форматов. Что работает там, через 2–4 недели будет на YouTube.</p>
+      <div class="ref-tag"><span class="tag tag-blue">Тренды</span></div>
+    </div>
+  </div>
+
+  <div class="practice">
+    <div class="practice-title">🎯 Дневник насмотренности (каждый день)</div>
+    <div class="settings-block" style="margin-top:.5rem">
+📅 Дата: ___
+🎬 Канал: ___
+🪝 Крючок (что в первых 3 сек): ___
+⏱ Длина: ___ сек
+⚡ Когда стало скучно (секунда): ___
+💥 Панчлайн: ___
+🔧 Что украду (приём/формат): ___
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ -->
+<!-- ═══════════ БИБЛИОТЕКА ═══════════ -->
+<!-- ═══════════════════════ -->
+<section class="module" id="library">
+  <div class="module-header">
+    <div class="module-icon mod-gold">📚</div>
+    <div><h2>Библиотека Продюсера-Отца</h2></div>
+  </div>
+
+  <h3 style="margin:0 0 1rem">🎧 Аудиокниги (Яндекс Книги / Букмейт)</h3>
+  <p style="margin-bottom:1rem">Слушай во время посуды, прогулок, за рулём.</p>
+
+  <div class="book-grid">
+    <div class="book-card">
+      <div class="book-type" style="color:var(--accent)">🎧 Аудио · Тексты</div>
+      <h4>«Пиши, сокращай»</h4>
+      <div class="book-author">Максим Ильяхов</div>
+      <p>Каждое слово на экране Shorts — на вес золота. Идеальна для титров, крючков и названий.</p>
+    </div>
+    <div class="book-card">
+      <div class="book-type" style="color:var(--accent)">🎧 Аудио · Сторителлинг</div>
+      <h4>«Спасите котика!»</h4>
+      <div class="book-author">Блейк Снайдер</div>
+      <p>Структура истории работает даже в 15 секундах. Завязка → конфликт → развязка.</p>
+    </div>
+    <div class="book-card">
+      <div class="book-type" style="color:var(--accent)">🎧 Аудио · Виральность</div>
+      <h4>«Заразительный»</h4>
+      <div class="book-author">Йона Бергер</div>
+      <p>6 принципов, почему люди репостят. Репосты — главный драйвер роста Shorts.</p>
+    </div>
+    <div class="book-card">
+      <div class="book-type" style="color:var(--accent)">🎧 Аудио · Креативность</div>
+      <h4>«Кради как художник»</h4>
+      <div class="book-author">Остин Клеон</div>
+      <p>Снимает блок перфекциониста. Все лучшие креаторы — «воры идей».</p>
+    </div>
+    <div class="book-card">
+      <div class="book-type" style="color:var(--accent)">🎧 Аудио · Внимание</div>
+      <h4>«Внимание!»</h4>
+      <div class="book-author">Бен Парр</div>
+      <p>Триггеры внимания: как делать крючки в первые 3 секунды.</p>
+    </div>
+    <div class="book-card">
+      <div class="book-type" style="color:var(--accent)">🎧 Аудио · Привычки</div>
+      <h4>«Атомные привычки»</h4>
+      <div class="book-author">Джеймс Клир</div>
+      <p>Поможет выстроить рутину и не бросить через 2 недели.</p>
+    </div>
+  </div>
+
+  <h3 style="margin:2rem 0 1rem">📖 Книги для глубокого погружения</h3>
+
+  <div class="book-grid">
+    <div class="book-card">
+      <div class="book-type" style="color:var(--green)">📖 Психология детей</div>
+      <h4>«Общаться с ребёнком. Как?»</h4>
+      <div class="book-author">Юлия Гиппенрейтер</div>
+      <p>Понимание реакций детей 2 и 4 лет. Создаёшь ситуации без давления.</p>
+    </div>
+    <div class="book-card">
+      <div class="book-type" style="color:var(--green)">📖 Юмор</div>
+      <h4>«Библия комедии»</h4>
+      <div class="book-author">Джуди Картер</div>
+      <p>Конструирование шуток для закадровых комментариев.</p>
+    </div>
+    <div class="book-card">
+      <div class="book-type" style="color:var(--green)">📖 Нарратив</div>
+      <h4>«Сторителлинг»</h4>
+      <div class="book-author">Роберт Макки</div>
+      <p>Глубокое погружение в принципы рассказывания историй.</p>
+    </div>
+    <div class="book-card">
+      <div class="book-type" style="color:var(--green)">📖 Монтаж</div>
+      <h4>«В мгновение ока»</h4>
+      <div class="book-author">Уолтер Мёрч</div>
+      <p>Философия склейки: почему мы режем именно здесь?</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ -->
+<!-- ═══════════ ФИНАЛ ═══════════ -->
+<!-- ═══════════════════════ -->
+<section class="module" id="final">
+  <div class="module-header">
+    <div class="module-icon mod-red">🏆</div>
+    <div><h2>Финальный чек-лист: готов ли ты к запуску?</h2></div>
+  </div>
+
+  <div class="checklist">
+    <label><input type="checkbox"><span>Архив: 500+ роликов отсмотрено по системе «Светофор»</span></label>
+    <label><input type="checkbox"><span>30+ готовых Shorts в папке «04_ГОТОВЫЕ_SHORTS»</span></label>
+    <label><input type="checkbox"><span>Каждый Shorts имеет название, обложку и хештеги</span></label>
+    <label><input type="checkbox"><span>Каждый ролик проходит чек-лист качества (10/10)</span></label>
+    <label><input type="checkbox"><span>Канал YouTube создан (имя, аватар, описание)</span></label>
+    <label><input type="checkbox"><span>Первые 7 Shorts запланированы в YouTube Studio</span></label>
+    <label><input type="checkbox"><span>«Банк идей» содержит 30+ идей</span></label>
+    <label><input type="checkbox"><span>Рутина: 1–2 провокации в день отлажены</span></label>
+    <label><input type="checkbox"><span>Монтаж 1 ролика ≤ 25 минут</span></label>
+    <label><input type="checkbox"><span>Прочитана/прослушана хотя бы 1 книга</span></label>
+  </div>
+
+  <div class="quote">
+    «Не жди идеального момента. 30 Shorts в черновиках = зелёный свет. Нажимай "Опубликовать". Алгоритм тебя найдёт.»
+    <span class="author">— Твой внутренний продюсер</span>
+  </div>
+</section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span class="big-emoji">🎬👨‍👧‍👧</span>
+  <p><strong>Shorts-Продюсер: Факультет Отцовства</strong></p>
+  <p style="margin-top:.3rem">Василиса, Анфиса и папа — команда мечты.</p>
+  <p style="margin-top:.5rem;opacity:.5">Сделано с любовью к семейному контенту • 2025</p>
+</footer>
+
+<script>
+function toggle(el){el.parentElement.classList.toggle('open')}
+
+const sects=document.querySelectorAll('.module');
+const links=document.querySelectorAll('.nav a');
+window.addEventListener('scroll',()=>{
+  let c='';
+  sects.forEach(s=>{if(scrollY>=s.offsetTop-120)c=s.id});
+  links.forEach(l=>{l.classList.toggle('active',l.getAttribute('href')==='#'+c)});
+});
+</script>
+</body>
+</html>
